@@ -3,12 +3,12 @@
 |''Description''|allows to substitute current tiddlers or page instead of opening tiddlers/pages in addition|
 |''Documentation''|see below|
 |''Type''|plugin|
-|''Version''|1.2.0|
+|''Version''|1.2.1|
 |''CoreVersion''|2.5.0|
 |''Source''|http://yakovl.bplaced.net/TW/FPTP.html#FromPlaceToPlacePlugin|
 |''Author''|Yakov Litvin|
 |''Contact''|See the [[main plugin discussion thread|https://groups.google.com/forum/#!topic/tiddlywiki/bICRWy8qo8g]] and [[contacts|http://customize.tiddlyspace.com/#%5B%5BYakov%20Litvin%5D%5D]]|
-|''Copyright''|Yakov Litvin, 2013|
+|''Copyright''|Yakov Litvin, 2023|
 |''Licence''|[[BSD-like open source license|http://yakovl.bplaced.net/TW/FPTP.html#%5B%5BYakov%20Litvin%20Public%20Licence%5D%5D]]|
 !!!Introduction
 In ~TiddlyWiki, links work "comulatively": when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary "flooding" with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
@@ -31,50 +31,47 @@ Once the meta keys are set and TW is reloaded, try to click links..
 !!!Config
 ***/
 //{{{
-config.extensions.txtFromPageToPageKey = 'alt';         // each 'alt', 'ctrl' and 'shift' work
-config.extensions.txtFromTiddlerToTiddlerKey = 'shift'; // each 'alt', 'ctrl' and 'shift' work
+config.extensions.txtFromPageToPageKey = 'alt'         // each 'alt', 'ctrl' and 'shift' work
+config.extensions.txtFromTiddlerToTiddlerKey = 'shift' // each 'alt', 'ctrl' and 'shift' work
 //}}}
 /***
 !!!Code
 ***/
 //{{{
-(function(){
-if(version.extensions.FromPlaceToPlacePlugin)
-    return;
-version.extensions.FromPlaceToPlacePlugin =        { major: 1, minor: 2, revision: 0, date: new Date(2013,10,24)};
+;(function(){
+if(version.extensions.FromPlaceToPlacePlugin) return
+version.extensions.FromPlaceToPlacePlugin = { major: 1, minor: 2, revision: 0, date: new Date(2023, 02, 28) }
 
-var firedWhenKeyWasPressed = function(event,key) {
+var firedWhenKeyWasPressed = function(event, key) {
 
     return (event.shiftKey && key == 'shift') ||
             (event.ctrlKey && key == 'ctrl') ||
-            (event.altKey && key == 'alt');
+            (event.altKey && key == 'alt')
 }
 
 //------------------------------------------------------------------------------------------------------------
 // From tiddler to tiddler
 
 // keep as a global var for a possibility of introspection
-orig_onClickTiddlerLink = onClickTiddlerLink;
+orig_onClickTiddlerLink = onClickTiddlerLink
 
-// hijack
+// decorate
 onClickTiddlerLink = function(ev) {
 
-    var result,
-        sourceTid = story.findContainingTiddler(this),
+    var sourceTid = story.findContainingTiddler(this),
         event = ev || window.event,
         key = config.extensions.txtFromTiddlerToTiddlerKey,
-        close = (firedWhenKeyWasPressed(event,key) && sourceTid)? true : false;
+        close = !!(firedWhenKeyWasPressed(event, key) && sourceTid)
 
     // to "correct" page and zoomer position,
     // hide the "source" tiddler before opening the "target" and closing the "source"
-    if(close)
-        sourceTid.style.display = "none";
-    result = orig_onClickTiddlerLink(event);
+    if(close) sourceTid.style.display = "none"
+    var result = orig_onClickTiddlerLink(event)
     if(close) {
-        var tName = sourceTid.getAttribute("tiddler");
-        story.closeTiddler(tName);
+        var tName = sourceTid.getAttribute("tiddler")
+        story.closeTiddler(tName)
     }
-    return result;
+    return result
 }
 
 //------------------------------------------------------------------------------------------------------------
@@ -83,14 +80,14 @@ jQuery("body").delegate("a.externalLink", "click", function(ev) {
 
     var event = ev || window.event,
         key = config.extensions.txtFromPageToPageKey,
-        close = firedWhenKeyWasPressed(event,key),
-        target = jQuery(this).attr("href");
+        close = firedWhenKeyWasPressed(event, key),
+        target = jQuery(this).attr("href")
 
     if(close) {
-        window.location.assign(target);
-        return false;
+        window.location.assign(target)
+        return false
     }
-});
+})
 
-})();
+})()
 //}}}
