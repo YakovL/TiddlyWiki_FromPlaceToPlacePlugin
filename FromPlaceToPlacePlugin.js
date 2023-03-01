@@ -1,15 +1,12 @@
 /***
-|''Name''|FromPlaceToPlacePlugin|
-|''Description''|allows to substitute current tiddlers or page instead of opening tiddlers/pages in addition|
-|''Documentation''|see below|
-|''Type''|plugin|
-|''Version''|1.2.1|
-|''CoreVersion''|2.5.0|
-|''Source''|http://yakovl.bplaced.net/TW/FPTP.html#FromPlaceToPlacePlugin|
-|''Author''|Yakov Litvin|
-|''Contact''|See the [[main plugin discussion thread|https://groups.google.com/forum/#!topic/tiddlywiki/bICRWy8qo8g]] and [[contacts|http://customize.tiddlyspace.com/#%5B%5BYakov%20Litvin%5D%5D]]|
-|''Copyright''|Yakov Litvin, 2023|
-|''Licence''|[[BSD-like open source license|http://yakovl.bplaced.net/TW/FPTP.html#%5B%5BYakov%20Litvin%20Public%20Licence%5D%5D]]|
+|Name        |FromPlaceToPlacePlugin|
+|Description |allows opening a tiddler or a page in place of the current one (as opposed to opening in addition)|
+|Version     |1.2.1|
+|Source      |https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/FromPlaceToPlacePlugin.js|
+|Author      |Yakov Litvin|
+|Contact     |Create an [[issue|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/issues]] or start a new thread in the [[Google Group|https://groups.google.com/g/tiddlywikiclassic/]]|
+|Copyright   |Yakov Litvin, 2023|
+|Licence     |[[MIT|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/LICENSE]]|
 !!!Introduction
 In ~TiddlyWiki, links work "comulatively": when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary "flooding" with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
 
