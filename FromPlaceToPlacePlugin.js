@@ -8,7 +8,7 @@
 |Copyright   |Yakov Litvin, 2023|
 |Licence     |[[MIT|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/LICENSE]]|
 !!!Introduction
-In ~TiddlyWiki, links work "comulatively": when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary "flooding" with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
+In ~TiddlyWiki, links work "cumulatively": when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary "flooding" with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
 
 It works in a simple way: it keeps the common functionality of the "click a link" action, but "hold meta key + click a link" causes "close and open" action:
 * for internal links, this means "close the tiddler in which the link is placed and open the target tiddler"
