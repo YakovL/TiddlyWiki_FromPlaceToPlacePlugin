@@ -35,11 +35,12 @@ config.extensions.txtFromTiddlerToTiddlerKey = 'shift' // each 'alt', 'ctrl' and
 !!!Code
 ***/
 //{{{
-;(function(){
+;(function() {
+// install only once
 if(version.extensions.FromPlaceToPlacePlugin) return
 version.extensions.FromPlaceToPlacePlugin = { major: 1, minor: 2, revision: 0, date: new Date(2023, 02, 28) }
 
-var firedWhenKeyWasPressed = function(event, key) {
+var wasKeyHeld = function(event, key) {
 
     return (event.shiftKey && key == 'shift') ||
             (event.ctrlKey && key == 'ctrl') ||
@@ -58,13 +59,13 @@ onClickTiddlerLink = function(ev) {
     var sourceTid = story.findContainingTiddler(this),
         event = ev || window.event,
         key = config.extensions.txtFromTiddlerToTiddlerKey,
-        close = !!(firedWhenKeyWasPressed(event, key) && sourceTid)
+        shouldClose = !!(wasKeyHeld(event, key) && sourceTid)
 
     // to "correct" page and zoomer position,
     // hide the "source" tiddler before opening the "target" and closing the "source"
-    if(close) sourceTid.style.display = "none"
+    if(shouldClose) sourceTid.style.display = "none"
     var result = orig_onClickTiddlerLink(event)
-    if(close) {
+    if(shouldClose) {
         var tName = sourceTid.getAttribute("tiddler")
         story.closeTiddler(tName)
     }
@@ -77,11 +78,11 @@ jQuery("body").delegate("a.externalLink", "click", function(ev) {
 
     var event = ev || window.event,
         key = config.extensions.txtFromPageToPageKey,
-        close = firedWhenKeyWasPressed(event, key),
-        target = jQuery(this).attr("href")
+        shouldClose = wasKeyHeld(event, key),
+        targetUrl = jQuery(this).attr("href")
 
-    if(close) {
-        window.location.assign(target)
+    if(shouldClose) {
+        window.location.assign(targetUrl)
         return false
     }
 })
