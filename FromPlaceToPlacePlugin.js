@@ -1,7 +1,7 @@
 /***
 |Name        |FromPlaceToPlacePlugin|
 |Description |allows opening a tiddler or a page in place of the current one (as opposed to opening in addition)|
-|Version     |1.2.1|
+|Version     |1.3.0|
 |Source      |https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/FromPlaceToPlacePlugin.js|
 |Author      |Yakov Litvin|
 |Contact     |Create an [[issue|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/issues]] or start a new thread in the [[Google Group|https://groups.google.com/g/tiddlywikiclassic/]]|
@@ -14,31 +14,39 @@ It works in a simple way: it keeps the common functionality of the "click a link
 * for internal links, this means "close the tiddler in which the link is placed and open the target tiddler"
 * for external links, this means "open the page in the same browser tab"
 !!!Installation & usage
-Aside the usual import/copy-and-add-{{{systemConfig}}}-tag action, you need to adjust the meta keys for internal and external links (and reload afterwards). To do this, change the "Config" section of this tiddler ({{{txtFromTiddlerToTiddlerKey}}} for internal and {{{txtFromPageToPageKey}}} for external links), if necessary. Note that:
+Installation is done via the usual steps: copy tiddler with the {{{systemConfig}}} tag, save reload. Try clicking links! Notes:
+* the demo page doesn't support import due to its development setup;
+* if you want to get automatical updates, consider installing [[ExtensionsExplorerPlugin|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin]].
+
+The meta keys that cause "opening in place" can be configured:
+|affected links |edit here                  |if empty, defaults to|option name|
+|external       |<<option txtFromPageToPageKey>>      |{{{alt}}}  |{{{txtFromPageToPageKey}}}|
+|inner (tiddler)|<<option txtFromTiddlerToTiddlerKey>>|{{{shift}}}|{{{txtFromTiddlerToTiddlerKey}}}|
+Supported values: {{{alt}}}, {{{ctrl}}}, and {{{shift}}} (using an unsupported value deactivates the corresponding feature).
+
+Note that:
 * {{{shift}}} doesn't work well for external links in Opera: on shift+click it opens the link in a new tab, so this will result in two equal tabs opened (with Opera, I recommend {{{alt}}})
 * {{{alt}}} doesn't work well with IE, so you probably would prefer {{{shift}}}
-* each {{{alt}}}, {{{ctrl}}} and {{{shift}}} work (with the limitations above); any other value of an option deactivates corresponding feature
-Once the meta keys are set and TW is reloaded, try to click links..
 !!!Demo
-* click this [[internal link|Introduction to FromPlaceToPlacePlugin]] when pressing {{{shift}}} (or whatever meta key you've set)
-* click this [[external link|http://yakovl.bplaced.net/TW/STP/STP.html]] when holding {{{alt}}} key
+For a quick test, check out the [[demo page|https://yakovl.github.io/TiddlyWiki_FromPlaceToPlacePlugin/#FromPlaceToPlacePlugin]] or
+* click this [[internal link|MainMenu]] while pressing {{{shift}}} (or whatever meta key you've set)
+* click this [[external link|https://github.com/YakovL/TiddlyWiki_ExtensionsExplorerPlugin]] while holding {{{alt}}} key
 !!!Additional notes
 * this works even with implicit links (like those in the "references" popup)
 * "external links" are links with the {{{externalLink}}} class, so links created with inline-html won't work unless the class is added
-!!!Config
-***/
-//{{{
-config.extensions.txtFromPageToPageKey = 'alt'         // each 'alt', 'ctrl' and 'shift' work
-config.extensions.txtFromTiddlerToTiddlerKey = 'shift' // each 'alt', 'ctrl' and 'shift' work
-//}}}
-/***
 !!!Code
 ***/
 //{{{
 ;(function() {
 // install only once
 if(version.extensions.FromPlaceToPlacePlugin) return
-version.extensions.FromPlaceToPlacePlugin = { major: 1, minor: 2, revision: 0, date: new Date(2023, 02, 28) }
+version.extensions.FromPlaceToPlacePlugin = {
+    major: 1, minor: 2, revision: 2, date: new Date(2023, 03, 3)
+}
+
+// avoid "undefined" in <<option>> input
+config.options.txtFromPageToPageKey = config.options.txtFromPageToPageKey || ''
+config.options.txtFromTiddlerToTiddlerKey = config.options.txtFromTiddlerToTiddlerKey || ''
 
 var wasKeyHeld = function(event, key) {
 
@@ -58,7 +66,7 @@ onClickTiddlerLink = function(ev) {
 
     var sourceTid = story.findContainingTiddler(this),
         event = ev || window.event,
-        key = config.extensions.txtFromTiddlerToTiddlerKey,
+        key = config.options.txtFromTiddlerToTiddlerKey || 'shift',
         shouldClose = !!(wasKeyHeld(event, key) && sourceTid)
 
     // to "correct" page and zoomer position,
@@ -77,7 +85,7 @@ onClickTiddlerLink = function(ev) {
 jQuery("body").delegate("a.externalLink", "click", function(ev) {
 
     var event = ev || window.event,
-        key = config.extensions.txtFromPageToPageKey,
+        key = config.options.txtFromPageToPageKey || 'alt',
         shouldClose = wasKeyHeld(event, key),
         targetUrl = jQuery(this).attr("href")
 
