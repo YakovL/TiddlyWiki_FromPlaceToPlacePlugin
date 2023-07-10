@@ -1,12 +1,11 @@
 /***
 |Name        |FromPlaceToPlacePlugin|
 |Description |allows opening a tiddler or a page in place of the current one (as opposed to opening in addition)|
-|Version     |1.3.0|
 |Source      |https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/FromPlaceToPlacePlugin.js|
 |Author      |Yakov Litvin|
+|Version     |1.3.0|
 |Contact     |Create an [[issue|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/issues]] or start a new thread in the [[Google Group|https://groups.google.com/g/tiddlywikiclassic/]]|
-|Copyright   |Yakov Litvin, 2023|
-|Licence     |[[MIT|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/LICENSE]]|
+|License     |[[MIT|https://github.com/YakovL/TiddlyWiki_YL_ExtensionsCollection/blob/master/Common%20License%20(MIT)]]|
 !!!Introduction
 In ~TiddlyWiki, links work "cumulatively": when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary "flooding" with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
 
