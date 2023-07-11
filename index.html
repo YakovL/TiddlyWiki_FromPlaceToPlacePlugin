@@ -547,6 +547,54 @@ body {font-size:0.8em;}
 </div>
 <!--POST-SHADOWAREA-->
 <div id="storeArea">
+<div title="DefaultTiddlers" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251502" changecount="1">
+<pre>[[Introduction to FromPlaceToPlacePlugin]]</pre>
+</div>
+<div title="ExternalTiddlersList" modifier="Yakov Litvin" created="202211110928" modified="202211180724" changecount="4">
+<pre>&lt;&lt;external [[FromPlaceToPlacePlugin]] file:&quot;FromPlaceToPlacePlugin.js&quot; plugin:true&gt;&gt;
+</pre>
+</div>
+<div title="InnerExternalLinkPlugin" creator="Yakov Litvin" modifier="Yakov Litvin" created="201305132202" modified="201310251428" tags="systemConfig code" changecount="38">
+<pre>/***
+|''Name''|InnerExternalLinkPlugin|
+|''Version''|0.9.1|
+|''Author''|Yakov Litvin|
+***/
+//{{{
+config.extensions.InnerExternalLinkPlugin_orig_createExternalLink = createExternalLink;
+createExternalLink = function(place,url,label) {
+
+	var permaLinkRegExp = /([^#]+)#(?:(?:([^%\[]+))|(?:\[\[([^\]]+)\]\])|(?:%5B%5B([^\]]+)%5D%5D))/,
+		// better to use decoding
+	    match = permaLinkRegExp.exec(url),
+	    siteUrlText = store.getTiddlerText(&quot;SiteUrl&quot;),
+	    pageLocation = window.location,
+	    urlRegExp = /^(([^:\/\?#]+):)?(\/\/([^\/\?#]*))?([^\?#]*)(\?([^#]*))?(#(.*))?/,
+	    matched = false;
+
+	if(match) {
+		var bareUrl = match[1],
+		    tiddlerName = match[4]? match[4] : (match[3]? match[3] : match[2]);
+		tiddlerName = decodeURIComponent(tiddlerName);
+	} else
+		return config.extensions.InnerExternalLinkPlugin_orig_createExternalLink(place,url,label);
+
+	if(siteUrlText == bareUrl)
+		matched = true;
+
+	match = urlRegExp.exec(pageLocation.toString());
+	if(match[1]+match[3]+match[5] == bareUrl)
+		matched = true;
+
+	// may be additional normalizing (stripping the protocol etc, encoding/decoding) should be added
+
+	if(matched)
+		return createTiddlyLink(place, tiddlerName, label);
+	else
+		return config.extensions.InnerExternalLinkPlugin_orig_createExternalLink(place,url,label);
+};
+//}}}</pre>
+</div>
 <div title="Introduction to FromPlaceToPlacePlugin" creator="Yakov Litvin" modifier="Yakov Litvin" created="201306221457" modified="201310242207" changecount="14">
 <pre>In ~TiddlyWiki, links work &quot;comulatively&quot;: when you click an internal link, you get +1 tiddler opened, external links open pages without closing ~TiddlyWiki (hence +1 browser tab). At times, this causes unnecessary &quot;flooding&quot; with opened things (tiddlers/pages). To solve this, FromPlaceToPlacePlugin was created.
 
@@ -557,23 +605,19 @@ What key to press -- depends on the settings: it can be {{{shift}}}, {{{ctrl}}} 
 
 Example: try this [[link|FromPlaceToPlacePlugin]] when pressing {{{shift}}}.</pre>
 </div>
-<div title="SiteTitle" creator="Yakov Litvin" modifier="Yakov Litvin" created="201303041452" modified="201308152022" changecount="2">
-<pre>~FromPlaceToPlacePlugin</pre>
-</div>
-<div title="SiteSubtitle" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251516" changecount="1">
-<pre>which helps to stop the flood of open tiddlers when navigating among them</pre>
-</div>
 <div title="MainMenu" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251501" changecount="1">
 <pre>[[Intro|Introduction to FromPlaceToPlacePlugin]]
 [[Plugin + docs|FromPlaceToPlacePlugin]]
 [[Licence|https://github.com/YakovL/TiddlyWiki_FromPlaceToPlacePlugin/blob/master/LICENSE]]</pre>
 </div>
-<div title="DefaultTiddlers" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251502" changecount="1">
-<pre>[[Introduction to FromPlaceToPlacePlugin]]</pre>
+<div title="SiteSubtitle" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251516" changecount="1">
+<pre>which helps to stop the flood of open tiddlers when navigating among them</pre>
 </div>
-<div title="ToolbarCommands" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251504" changecount="1">
-<pre>|~ViewToolbar|closeTiddler closeOthers +editTiddler jump permalink &gt; fields references deleteTiddler|
-|~EditToolbar|+saveTiddler -cancelTiddler references deleteTiddler|</pre>
+<div title="SiteTitle" creator="Yakov Litvin" modifier="Yakov Litvin" created="201303041452" modified="201308152022" changecount="2">
+<pre>~FromPlaceToPlacePlugin</pre>
+</div>
+<div title="SiteUrl" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310242211" modified="201310242212" changecount="2">
+<pre>https://yakovl.github.io/TiddlyWiki_FromPlaceToPlacePlugin/</pre>
 </div>
 <div title="TiddlerInFilePlugin" modifier="Yakov Litvin" created="201808191403" modified="202212060812" tags="systemConfig" changecount="274" content-type="text/javascript">
 <pre>/***
@@ -862,53 +906,9 @@ if(!config.macros.external.orig_deleteTiddler) {
 //}}}
 </pre>
 </div>
-<div title="ExternalTiddlersList" modifier="Yakov Litvin" created="202211110928" modified="202211180724" changecount="4">
-<pre>&lt;&lt;external [[FromPlaceToPlacePlugin]] file:&quot;FromPlaceToPlacePlugin.js&quot; plugin:true&gt;&gt;
-</pre>
-</div>
-<div title="SiteUrl" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310242211" modified="201310242212" changecount="2">
-<pre>https://yakovl.github.io/TiddlyWiki_FromPlaceToPlacePlugin/</pre>
-</div>
-<div title="InnerExternalLinkPlugin" creator="Yakov Litvin" modifier="Yakov Litvin" created="201305132202" modified="201310251428" tags="systemConfig code" changecount="38">
-<pre>/***
-|''Name''|InnerExternalLinkPlugin|
-|''Version''|0.9.1|
-|''Author''|Yakov Litvin|
-***/
-//{{{
-config.extensions.InnerExternalLinkPlugin_orig_createExternalLink = createExternalLink;
-createExternalLink = function(place,url,label) {
-
-	var permaLinkRegExp = /([^#]+)#(?:(?:([^%\[]+))|(?:\[\[([^\]]+)\]\])|(?:%5B%5B([^\]]+)%5D%5D))/,
-		// better to use decoding
-		match = permaLinkRegExp.exec(url),
-		siteUrlText = store.getTiddlerText(&quot;SiteUrl&quot;),
-		pageLocation = window.location,
-		urlRegExp = /^(([^:\/\?#]+):)?(\/\/([^\/\?#]*))?([^\?#]*)(\?([^#]*))?(#(.*))?/,
-		matched = false;
-
-	if(match) {
-		var bareUrl = match[1],
-			tiddlerName = match[4]? match[4] : (match[3]? match[3] : match[2]);
-		tiddlerName = decodeURIComponent(tiddlerName);
-	} else
-		return config.extensions.InnerExternalLinkPlugin_orig_createExternalLink(place,url,label);
-
-	if(siteUrlText == bareUrl)
-		matched = true;
-
-	match = urlRegExp.exec(pageLocation.toString());
-	if(match[1]+match[3]+match[5] == bareUrl)
-		matched = true;
-
-	// may be additional normalizing (stripping the protocol etc, encoding/decoding) should be added
-
-	if(matched)
-		return createTiddlyLink(place, tiddlerName, label);
-	else
-		return config.extensions.InnerExternalLinkPlugin_orig_createExternalLink(place,url,label);
-};
-//}}}</pre>
+<div title="ToolbarCommands" creator="Yakov Litvin" modifier="Yakov Litvin" created="201310251504" changecount="1">
+<pre>|~ViewToolbar|closeTiddler closeOthers +editTiddler jump permalink &gt; fields references deleteTiddler|
+|~EditToolbar|+saveTiddler -cancelTiddler references deleteTiddler|</pre>
 </div>
 </div>
 <!--POST-STOREAREA-->
